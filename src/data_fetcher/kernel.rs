@@ -1,4 +1,3 @@
-use regex::Regex;
 use std::fs;
 
 #[derive(Debug)]
@@ -15,12 +14,11 @@ pub fn get_kernel() -> KernelInfo {
 
     return KernelInfo {
         full_name: kernel_full.first().unwrap().to_string(),
-        short_name: kernel_short.first().unwrap().to_string().to_lowercase(),
+        short_name: kernel_short.first().unwrap().to_string(),
         short_name_with_version: format!(
             "{} {}",
             kernel_short.first().unwrap(),
             kernel_short.get(2).unwrap()
-        )
-        .to_lowercase(),
+        ),
     };
 }
