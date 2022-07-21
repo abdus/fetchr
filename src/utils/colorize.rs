@@ -8,6 +8,7 @@ pub enum Colors {
     Magenta,
     Cyan,
     LightGray,
+    DarkGray,
     Default,
 
     BgRed,
@@ -19,20 +20,25 @@ pub enum Colors {
     BgCyan,
     BgLightGray,
     BgDefault,
+
+    ResetDim,
 }
 
 impl Colors {
-    fn set_color_code(color: Colors) -> &'static str {
+    fn set_color_code(color: &Colors) -> &'static str {
         return match color {
-            Colors::Red => "\x1b[31m",
-            Colors::Blue => "\x1b[34m",
-            Colors::Green => "\x1b[32m",
+            Colors::Red => "\x1b[91m",
+            Colors::Blue => "\x1b[94m",
+            Colors::Green => "\x1b[92m",
             Colors::Black => "\x1b[30m",
-            Colors::Orange => "\x1b[33m",
-            Colors::Magenta => "\x1b[35m",
-            Colors::Cyan => "\x1b[36m",
+            Colors::Orange => "\x1b[93m",
+            Colors::Magenta => "\x1b[95m",
+            Colors::Cyan => "\x1b[96m",
             Colors::LightGray => "\x1b[37m",
             Colors::Default => "\x1b[39m",
+            Colors::DarkGray => "\x1b[90m",
+
+            Colors::ResetDim => "\x1b[22m",
 
             Colors::BgRed => "\x1b[41m",
             Colors::BgBlue => "\x1b[44m",
@@ -47,12 +53,8 @@ impl Colors {
     }
 }
 
-pub fn colorize_text(text: &str, color: Colors) {
-    println!(
-        "{}{}{}{}",
-        Colors::set_color_code(color),
-        text,
-        Colors::set_color_code(Colors::Default),
-        Colors::set_color_code(Colors::BgDefault)
-    );
+pub fn colorize_text(text: &str, color: &Colors) -> String {
+    let colored_string = format!("{}{}\x1b[0m", Colors::set_color_code(&color), text,);
+
+    colored_string
 }
