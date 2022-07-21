@@ -1,6 +1,7 @@
+use serde::{Deserialize, Serialize};
 use std::env;
 
-#[derive(Debug)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct ShellInfo {
     pub name: String,
     pub path: String,

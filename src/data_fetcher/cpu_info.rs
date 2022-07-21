@@ -1,6 +1,7 @@
+use serde::{Deserialize, Serialize};
 use std::fs;
 
-#[derive(Debug)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct CpuInfo {
     pub model_name: String,
     pub core_count: u8,

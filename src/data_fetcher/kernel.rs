@@ -1,6 +1,7 @@
+use serde::{Deserialize, Serialize};
 use std::fs;
 
-#[derive(Debug)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct KernelInfo {
     pub full_name: String,
     pub short_name: String,

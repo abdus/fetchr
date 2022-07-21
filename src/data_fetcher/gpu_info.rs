@@ -1,11 +1,12 @@
 use regex::Regex;
+use serde::{Deserialize, Serialize};
 use std::process;
 
-#[derive(Debug)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct GpuInfo {
-    model_name: String,
-    kernel_driver: String,
-    kernel_module: String,
+    pub model_name: String,
+    pub kernel_driver: String,
+    pub kernel_module: String,
 }
 
 #[cfg(target_os = "linux")]
