@@ -16,6 +16,7 @@ struct SystemInfo {
     storage_info: data_fetcher::storage_info::StorageInfo,
     package_info: data_fetcher::sys_pkg_info::PackageInfo,
     general_info: data_fetcher::general_info::GeneralInfo,
+    uptime_info: data_fetcher::uptime_info::UptimeInfo,
 }
 
 fn main() {
@@ -30,8 +31,6 @@ fn main() {
         }
     }
 
-    println!("{longest_key_len}");
-
     let system_info = SystemInfo {
         mem_info: data_fetcher::mem_info::get_mem_info(),
         kernel_info: data_fetcher::kernel::get_kernel(),
@@ -41,6 +40,7 @@ fn main() {
         storage_info: data_fetcher::storage_info::get_storage_info(),
         package_info: data_fetcher::sys_pkg_info::get_sys_pkg_info(),
         general_info: data_fetcher::general_info::get_general_info(),
+        uptime_info: data_fetcher::uptime_info::get_uptime_info(),
     };
 
     //let json = serde_json::to_string_pretty(&system_info).unwrap();
@@ -127,6 +127,18 @@ fn main() {
         key: " │ SHELL         ".to_owned(),
         value: format!("{}", system_info.shell_info.name),
         color: utils::colorize::Colors::Blue,
+    });
+
+    term_lines.push(template::TermLine {
+        key: " │ UPTIME        ".to_owned(),
+        value: format!("{}", system_info.uptime_info.uptime_human_time),
+        color: utils::colorize::Colors::Red,
+    });
+
+    term_lines.push(template::TermLine {
+        key: " │ IDLE          ".to_owned(),
+        value: format!("{}", system_info.uptime_info.idle_human_time),
+        color: utils::colorize::Colors::Cyan,
     });
 
     term_lines.push(template::TermLine {

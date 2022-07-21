@@ -6,3 +6,4 @@ pub mod mem_info;
 pub mod shell;
 pub mod storage_info;
 pub mod sys_pkg_info;
+pub mod uptime_info;
