@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 //use serde_json;
-use chrono::{self, Datelike, Timelike};
+use chrono::{self, Timelike};
 
 mod data_fetcher;
 mod template;
@@ -12,7 +12,7 @@ struct SystemInfo {
     kernel_info: data_fetcher::kernel::KernelInfo,
     shell_info: data_fetcher::shell::ShellInfo,
     cpu_info: data_fetcher::cpu_info::CpuInfo,
-    gpu_info: Vec<data_fetcher::gpu_info::GpuInfo>,
+    //gpu_info: Vec<data_fetcher::gpu_info::GpuInfo>,
     storage_info: data_fetcher::storage_info::StorageInfo,
     package_info: data_fetcher::sys_pkg_info::PackageInfo,
     general_info: data_fetcher::general_info::GeneralInfo,
@@ -36,7 +36,7 @@ fn main() {
         kernel_info: data_fetcher::kernel::get_kernel(),
         shell_info: data_fetcher::shell::get_shell_info(),
         cpu_info: data_fetcher::cpu_info::get_cpu_info(),
-        gpu_info: data_fetcher::gpu_info::get_gpu_info(),
+        //gpu_info: data_fetcher::gpu_info::get_gpu_info(),
         storage_info: data_fetcher::storage_info::get_storage_info(),
         package_info: data_fetcher::sys_pkg_info::get_sys_pkg_info(),
         general_info: data_fetcher::general_info::get_general_info(),
@@ -85,21 +85,21 @@ fn main() {
         color: utils::colorize::Colors::Red,
     });
 
-    let mut gpu_drivers_str = String::new();
+    //let mut gpu_drivers_str = String::new();
 
-    for (idx, gpu) in system_info.gpu_info.iter().enumerate() {
-        if idx != 0 {
-            gpu_drivers_str.push_str(", ")
-        };
+    //for (idx, gpu) in system_info.gpu_info.iter().enumerate() {
+    //if idx != 0 {
+    //gpu_drivers_str.push_str(", ")
+    //};
 
-        gpu_drivers_str.push_str(&gpu.kernel_driver);
-    }
+    //gpu_drivers_str.push_str(&gpu.kernel_driver);
+    //}
 
-    term_lines.push(template::TermLine {
-        key: " │ GPU DRIVERS   ".to_owned(),
-        value: format!("{}", gpu_drivers_str),
-        color: utils::colorize::Colors::Cyan,
-    });
+    //term_lines.push(template::TermLine {
+    //key: " │ GPU DRIVERS   ".to_owned(),
+    //value: format!("{}", gpu_drivers_str),
+    //color: utils::colorize::Colors::Cyan,
+    //});
 
     term_lines.push(template::TermLine {
         key: " │ KERNEL        ".to_owned(),
