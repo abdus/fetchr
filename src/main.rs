@@ -7,15 +7,6 @@ mod load_config;
 mod template;
 mod utils;
 
-pub trait VecExtended<T>: AsMut<Vec<T>> {
-    fn prepend(&mut self, elem: T) {
-        let mut vec = vec![elem];
-        self.as_mut().splice(..0, vec.drain(..));
-    }
-}
-
-impl<T> VecExtended<T> for Vec<T> {}
-
 fn main() {
     let config = load_config::get_conf_from_file();
     let mut term_lines: Vec<template::TermLine> = Vec::new();
