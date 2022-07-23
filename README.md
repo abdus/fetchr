@@ -17,7 +17,7 @@ There are two ways you can use this package.
 
 Download the `fetchr` binary executable from the release page, make it
 executable (`chmod +x fetchr`), and run it by executing `./fetchr`. You can
-also put the executable in your `PATH` variable, and call it from anywhere. 
+also put the executable in your `PATH` variable, and call it from anywhere.
 
 The binary executable is compiled with `musl libc` instead of `glibc`. This
 means, it can be run on most of the Linux distributions without any additional
@@ -30,10 +30,8 @@ set-up and/or configuration.
 2. Once cloned, `cd` into the project root
 3. Build the project using `cargo`. This will sync all external crates
 4. Run the project using `cargo r`
-5. To generate a release build using `musl libc`, run `cargo build --target
-   x86_64-unknown-linux-musl --release`. Note that you will have to add the
+5. To generate a release build using `musl libc`, run `cargo build --target x86_64-unknown-linux-musl --release`. Note that you will have to add the
    target separately by executing `rustup target add x86_64-unknown-linux-musl`
-
 
 ## Configuration
 
@@ -65,6 +63,14 @@ future, I will add support for customizing the data output too.
 ]
 ```
 
+### Commands
+
+1. `fetchr`: Prints a nice minimal table in terminal. Respects configuration
+   file.
+2. `fetchr json`: `fetchr` can also export a JSON tree of the system data it
+   aggregates. You can get a JSON tree by running `fetchr json` from your
+   terminal. This option does not respect Configuration File, and will output
+   everything.
 
 ## How to contribute
 
