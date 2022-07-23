@@ -7,19 +7,6 @@ mod load_config;
 mod template;
 mod utils;
 
-#[derive(Debug, Serialize, Deserialize)]
-struct SystemInfo {
-    mem_info: data_fetcher::mem_info::MemInfo,
-    kernel_info: data_fetcher::kernel::KernelInfo,
-    shell_info: data_fetcher::shell::ShellInfo,
-    cpu_info: data_fetcher::cpu_info::CpuInfo,
-    //gpu_info: Vec<data_fetcher::gpu_info::GpuInfo>,
-    storage_info: data_fetcher::storage_info::StorageInfo,
-    package_info: data_fetcher::sys_pkg_info::PackageInfo,
-    general_info: data_fetcher::general_info::GeneralInfo,
-    uptime_info: data_fetcher::uptime_info::UptimeInfo,
-}
-
 pub trait VecExtended<T>: AsMut<Vec<T>> {
     fn prepend(&mut self, elem: T) {
         let mut vec = vec![elem];
@@ -93,7 +80,10 @@ fn main() {
                 let cpu_info = data_fetcher::cpu_info::get_cpu_info();
                 term_lines.push(template::TermLine {
                     key: display_name.to_owned(),
-                    value: format!("{} [{}]", cpu_info.core_count, cpu_info.thread_count),
+                    value: format!(
+                        "{} [{}] @ {} GHz",
+                        cpu_info.core_count, cpu_info.thread_count, cpu_info.max_freq_in_ghz
+                    ),
                     color: utils::colorize::Colors::Red,
                 });
             }
@@ -234,13 +224,26 @@ fn align_string(text: &str, size: usize, alignment: Alignment, pad_with: Option<
     aligned_str
 }
 
+#[derive(Debug, Serialize, Deserialize)]
+struct SystemInfo {
+    mem_info: data_fetcher::mem_info::MemInfo,
+    kernel_info: data_fetcher::kernel::KernelInfo,
+    shell_info: data_fetcher::shell::ShellInfo,
+    cpu_info: data_fetcher::cpu_info::CpuInfo,
+    gpu_info: Vec<data_fetcher::gpu_info::GpuInfo>,
+    storage_info: data_fetcher::storage_info::StorageInfo,
+    package_info: data_fetcher::sys_pkg_info::PackageInfo,
+    general_info: data_fetcher::general_info::GeneralInfo,
+    uptime_info: data_fetcher::uptime_info::UptimeInfo,
+}
+
 fn get_json() -> SystemInfo {
     SystemInfo {
         mem_info: data_fetcher::mem_info::get_mem_info(),
         kernel_info: data_fetcher::kernel::get_kernel(),
         shell_info: data_fetcher::shell::get_shell_info(),
         cpu_info: data_fetcher::cpu_info::get_cpu_info(),
-        //gpu_info: data_fetcher::gpu_info::get_gpu_info(),
+        gpu_info: data_fetcher::gpu_info::get_gpu_info(),
         storage_info: data_fetcher::storage_info::get_storage_info(),
         package_info: data_fetcher::sys_pkg_info::get_sys_pkg_info(),
         general_info: data_fetcher::general_info::get_general_info(),
