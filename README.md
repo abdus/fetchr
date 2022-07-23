@@ -7,7 +7,7 @@ in a terminal. It is written in Rust.
 makes it extremely fast. Information that cannot be accessed from the `/proc`
 directory (such as GPU Info), comes from Linux system calls.
 
-![fetchr](./screenshot.png)
+![fetchr](./term-screenshot.png)
 
 ## Installation
 
