@@ -1,0 +1,4 @@
+[
+  { "component": "mem", "display_name": "Memory", "format": "" },
+  { "component": "cpu", "display_name": "CPU", "format": "" }
+]
