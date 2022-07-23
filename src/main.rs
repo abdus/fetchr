@@ -8,6 +8,24 @@ mod template;
 mod utils;
 
 fn main() {
+    let args: Vec<String> = std::env::args().collect();
+
+    if args.len() < 2 {
+        // no args provided
+        print_prompt();
+    } else {
+        if let Some(command) = args.get(1) {
+            let command = &command[..];
+
+            match command {
+                "json" => print_json(),
+                _ => {}
+            };
+        };
+    }
+}
+
+fn print_prompt() {
     let config = load_config::get_conf_from_file();
     let mut term_lines: Vec<template::TermLine> = Vec::new();
 
@@ -135,29 +153,28 @@ fn main() {
                 });
             }
 
+            "gpu" => {
+                let gpu_info = data_fetcher::gpu_info::get_gpu_info();
+                let mut gpu_drivers_str = String::new();
+
+                for (idx, gpu) in gpu_info.iter().enumerate() {
+                    if idx != 0 {
+                        gpu_drivers_str.push_str(", ")
+                    };
+
+                    gpu_drivers_str.push_str(&gpu.kernel_driver);
+                }
+
+                term_lines.push(template::TermLine {
+                    key: display_name.to_owned(),
+                    value: format!("{}", gpu_drivers_str),
+                    color: utils::colorize::Colors::Cyan,
+                });
+            }
+
             _ => {}
         }
     }
-
-    //let json = serde_json::to_string_pretty(&system_info).unwrap();
-
-    // println!("{json}");
-
-    //let mut gpu_drivers_str = String::new();
-
-    //for (idx, gpu) in system_info.gpu_info.iter().enumerate() {
-    //if idx != 0 {
-    //gpu_drivers_str.push_str(", ")
-    //};
-
-    //gpu_drivers_str.push_str(&gpu.kernel_driver);
-    //}
-
-    //term_lines.push(template::TermLine {
-    //key: " │ GPU DRIVERS   ".to_owned(),
-    //value: format!("{}", gpu_drivers_str),
-    //color: utils::colorize::Colors::Cyan,
-    //});
 
     term_lines.push(template::TermLine {
         key: String::new(),
@@ -228,8 +245,8 @@ struct SystemInfo {
     uptime_info: data_fetcher::uptime_info::UptimeInfo,
 }
 
-fn get_json() -> SystemInfo {
-    SystemInfo {
+fn print_json() {
+    let sys_info = SystemInfo {
         mem_info: data_fetcher::mem_info::get_mem_info(),
         kernel_info: data_fetcher::kernel::get_kernel(),
         shell_info: data_fetcher::shell::get_shell_info(),
@@ -239,5 +256,9 @@ fn get_json() -> SystemInfo {
         package_info: data_fetcher::sys_pkg_info::get_sys_pkg_info(),
         general_info: data_fetcher::general_info::get_general_info(),
         uptime_info: data_fetcher::uptime_info::get_uptime_info(),
-    }
+    };
+
+    let json = serde_json::to_string_pretty(&sys_info)
+        .unwrap_or("Failed to convert data to JSON".to_owned());
+    println!("{json}");
 }
