@@ -1,6 +1,19 @@
-use serde::{Deserialize, Serialize};
 //use serde_json;
 use chrono::{self, Timelike};
+use serde::{Deserialize, Serialize};
+
+#[derive(Debug, Serialize, Deserialize)]
+struct SystemInfo {
+    mem_info: data_fetcher::mem_info::MemInfo,
+    kernel_info: data_fetcher::kernel::KernelInfo,
+    shell_info: data_fetcher::shell::ShellInfo,
+    cpu_info: data_fetcher::cpu_info::CpuInfo,
+    gpu_info: Vec<data_fetcher::gpu_info::GpuInfo>,
+    storage_info: data_fetcher::storage_info::StorageInfo,
+    package_info: data_fetcher::sys_pkg_info::PackageInfo,
+    general_info: data_fetcher::general_info::GeneralInfo,
+    uptime_info: data_fetcher::uptime_info::UptimeInfo,
+}
 
 mod data_fetcher;
 mod load_config;
@@ -187,8 +200,8 @@ fn print_prompt() {
 
 enum Alignment {
     LEFT,
-    RIGHT,
-    CENTER,
+    //RIGHT,
+    //CENTER,
 }
 
 fn align_string(text: &str, size: usize, alignment: Alignment, pad_with: Option<char>) -> String {
@@ -200,49 +213,36 @@ fn align_string(text: &str, size: usize, alignment: Alignment, pad_with: Option<
     };
 
     let aligned_str = match alignment {
-        Alignment::RIGHT => {
-            let padded = format!("{} {text}", pad_char.repeat(repeat_count));
-            padded
-        }
+        //Alignment::RIGHT => {
+            //let padded = format!("{} {text}", pad_char.repeat(repeat_count));
+            //padded
+        //}
 
         Alignment::LEFT => {
             let padded = format!("{text} {}", pad_char.repeat(repeat_count));
             padded
         }
 
-        Alignment::CENTER => {
-            let pad_count: (usize, usize) = if repeat_count % 2 == 0 {
-                // even. add half to right and left
-                (repeat_count / 2, repeat_count / 2)
-            } else {
-                // odd. add half + 1 to left and half to right
-                ((repeat_count / 2), (repeat_count / 2) + 1)
-            };
+        //Alignment::CENTER => {
+            //let pad_count: (usize, usize) = if repeat_count % 2 == 0 {
+                //// even. add half to right and left
+                //(repeat_count / 2, repeat_count / 2)
+            //} else {
+                //// odd. add half + 1 to left and half to right
+                //((repeat_count / 2), (repeat_count / 2) + 1)
+            //};
 
-            let padded = format!(
-                "{} {text} {}",
-                pad_char.repeat(pad_count.0),
-                pad_char.repeat(pad_count.1)
-            );
+            //let padded = format!(
+                //"{} {text} {}",
+                //pad_char.repeat(pad_count.0),
+                //pad_char.repeat(pad_count.1)
+            //);
 
-            padded
-        }
+            //padded
+        //}
     };
 
     aligned_str
-}
-
-#[derive(Debug, Serialize, Deserialize)]
-struct SystemInfo {
-    mem_info: data_fetcher::mem_info::MemInfo,
-    kernel_info: data_fetcher::kernel::KernelInfo,
-    shell_info: data_fetcher::shell::ShellInfo,
-    cpu_info: data_fetcher::cpu_info::CpuInfo,
-    gpu_info: Vec<data_fetcher::gpu_info::GpuInfo>,
-    storage_info: data_fetcher::storage_info::StorageInfo,
-    package_info: data_fetcher::sys_pkg_info::PackageInfo,
-    general_info: data_fetcher::general_info::GeneralInfo,
-    uptime_info: data_fetcher::uptime_info::UptimeInfo,
 }
 
 fn print_json() {
